@@ -2,16 +2,23 @@
   "name": "peoplepilot-hr",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build && node scripts/export-to-dist.mjs",
-    "start": "next start",
+    "dev": "vinext dev",
+    "build": "vinext build && node scripts/copy-hosting.mjs",
+    "start": "vinext start",
     "lint": "next lint"
   },
   "dependencies": {
     "next": "15.5.22",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-server-dom-webpack": "19.2.8",
+    "vinext": "0.2.1"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.4",
+    "@vitejs/plugin-rsc": "^0.5.30",
+    "vite": "^8.1.5"
+  }
 }
