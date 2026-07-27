@@ -6,7 +6,7 @@ import { Brand, Icon } from "../icons";
 
 const roleData = {
   Employer: { greeting: "Good morning, Jamie.", sub: "Your team is 96% compliant. Two small actions need you.", stats: [["24","Active people","↑ 3 this month"],["4","Onboarding","2 need attention"],["96%","Compliance","↑ 4% this week"],["3","On leave","View calendar"]] },
-  Employee: { greeting: "Good morning, Maya.", sub: "You’re all set. Here’s what’s happening at Northstar.", stats: [["12.5","Leave days","Available"],["100%","Onboarding","All complete"],["1","Payslip","Ready to view"],["4","Benefits","Active plans"]] },
+  Employee: { greeting: "Good morning, Maya.", sub: "You’re all set. Here’s what’s happening at demo.", stats: [["12.5","Leave days","Available"],["100%","Onboarding","All complete"],["1","Payslip","Ready to view"],["4","Benefits","Active plans"]] },
   "HR Operations": { greeting: "Operations overview.", sub: "Eight client companies have active people tasks today.", stats: [["18","Open tasks","5 high priority"],["8","Active clients","All regions"],["42","Onboardings","12 this week"],["98%","SLA met","↑ 2% this month"]] },
   Admin: { greeting: "Platform control center.", sub: "Systems are healthy. One access review is due.", stats: [["132","Users","Across 4 roles"],["8","Companies","All active"],["99.9%","Uptime","Last 30 days"],["1","Access review","Due Friday"]] },
 };
@@ -20,7 +20,6 @@ const team = [
 
 export default function Dashboard(){
   const [role,setRole]=useState("Employer");
-  const [modal,setModal]=useState(false);
   const [toast,setToast]=useState("");
   const data=roleData[role];
   const notify=(msg)=>{setToast(msg); setTimeout(()=>setToast(""),2500)};
@@ -33,10 +32,10 @@ export default function Dashboard(){
         <span className="side-label">COMPLIANCE</span>
         <a><Icon name="shield" size={19}/> Compliance</a><a><Icon name="file" size={19}/> Documents</a><a><Icon name="book" size={19}/> Policies</a>
       </nav>
-      <div className="sidebar-bottom"><a><Icon name="settings" size={19}/> Settings</a><Link href="/login"><Icon name="logout" size={19}/> Log out</Link><div className="user-chip"><span>JM</span><div><strong>Jamie Morgan</strong><small>Northstar Studio</small></div></div></div>
+      <div className="sidebar-bottom"><a><Icon name="settings" size={19}/> Settings</a><Link href="/"><Icon name="arrow" size={19}/> Back to site</Link><div className="user-chip"><span>JM</span><div><strong>Jamie Morgan</strong><small>demo</small></div></div></div>
     </aside>
     <section className="dashboard-main">
-      <header><div><small>Northstar Studio <b>●</b> London, UK</small></div><div className="dash-actions"><button className="icon-button" onClick={()=>notify("You’re all caught up!")}><Icon name="bell" size={19}/><i/></button><select value={role} onChange={e=>setRole(e.target.value)} aria-label="Preview role">{Object.keys(roleData).map(r=><option key={r}>{r}</option>)}</select><button className="button button-dark button-small" onClick={()=>setModal(true)}><Icon name="plus" size={18}/> Add employee</button></div></header>
+      <header><div><small>demo <b>●</b> London, UK</small></div><div className="dash-actions"><button className="icon-button" onClick={()=>notify("You’re all caught up!")}><Icon name="bell" size={19}/><i/></button><select value={role} onChange={e=>setRole(e.target.value)} aria-label="Preview role">{Object.keys(roleData).map(r=><option key={r}>{r}</option>)}</select></div></header>
       <div className="dash-content">
         <div className="dash-title"><div><h1>{data.greeting}</h1><p>{data.sub}</p></div><span>MONDAY, 27 JULY</span></div>
         <div className="stat-grid">{data.stats.map((s,i)=><article key={s[1]}><div className={`stat-symbol stat-${i}`}><Icon name={["people","spark","shield","calendar"][i]} size={20}/></div><span>{s[1]}</span><b>{s[0]}</b><small>{s[2]}</small></article>)}</div>
@@ -56,7 +55,6 @@ export default function Dashboard(){
         </div>
       </div>
     </section>
-    {modal&&<div className="modal-backdrop" onMouseDown={()=>setModal(false)}><form className="modal" onMouseDown={e=>e.stopPropagation()} onSubmit={e=>{e.preventDefault();setModal(false);notify("Onboarding invite sent")}}><button type="button" className="modal-close" onClick={()=>setModal(false)}><Icon name="close"/></button><div className="modal-icon"><Icon name="people" size={30}/></div><p className="role-kicker">START ONBOARDING</p><h2>Add a new employee</h2><p>Just the basics. Our HR team will take it from here.</p><label>Full name<input placeholder="e.g. Taylor Reid" required/></label><label>Work email<input type="email" placeholder="taylor@company.com" required/></label><div className="form-row"><label>Start date<input type="date" required/></label><label>Work location<select><option>United Kingdom</option><option>United States</option><option>Canada</option></select></label></div><button className="button button-dark">Send to HR <Icon name="arrow"/></button></form></div>}
     {toast&&<div className="toast"><Icon name="check" size={18}/>{toast}</div>}
   </main>
 }

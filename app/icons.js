@@ -27,5 +27,5 @@ export function Icon({ name, size = 24, stroke = 2 }) {
 }
 
 export function Brand({ light = false }) {
-  return <div className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark">P</span><span>PeoplePilot</span></div>;
+  return <div className={`brand ${light ? "brand-light" : ""}`}><span className="brand-mark">d</span><span>demo</span></div>;
 }
