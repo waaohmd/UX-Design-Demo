@@ -8,3 +8,7 @@ dist
 *.log
 .env*
 !.env.example
+data/*.sqlite
+data/*.sqlite-shm
+data/*.sqlite-wal
+data/.master-key

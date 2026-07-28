@@ -10,13 +10,6 @@ const steps = [
   { n: "03", title: "Watch it get done.", text: "Track every signature, task and deadline from one clear progress view.", icon: "check", color: "orange" },
 ];
 
-const roles = [
-  { label: "Employer", title: "Run your team, not the paperwork.", text: "Start onboarding in a click, see compliance at a glance, access employee files, time, payroll and every policy you need.", icon: "building" },
-  { label: "Employee", title: "A first day that feels effortless.", text: "Follow a friendly onboarding guide, sign documents, finish training, and find leave, payslips and benefits anytime.", icon: "people" },
-  { label: "HR Operations", title: "Expert control behind the scenes.", text: "Build location and industry-specific compliance packs, keep regulations current, and support every hire and exit.", icon: "shield" },
-  { label: "Admin", title: "The right access for every role.", text: "Manage platform permissions, operational oversight and secure access across every client company.", icon: "settings" },
-];
-
 const locations = {
   Africa: [
     ["🇪🇬","Egypt"],["🇰🇪","Kenya"],["🇳🇬","Nigeria"],["🇿🇦","South Africa"],["🇹🇳","Tunisia"],
@@ -38,19 +31,29 @@ const flagCode = (flag, country) => country === "Scotland"
 
 export default function Home() {
   const [menu, setMenu] = useState(false);
-  const [role, setRole] = useState(0);
+  const [theme, setTheme] = useState("light");
 
   useEffect(() => {
+    const savedTheme = window.localStorage.getItem("demo-product-theme-v2");
+    if (savedTheme === "light" || savedTheme === "dark") setTheme(savedTheme);
     const items = document.querySelectorAll("[data-reveal]");
     const observer = new IntersectionObserver((entries) => entries.forEach(e => e.isIntersecting && e.target.classList.add("revealed")), { threshold: .16 });
     items.forEach(i => observer.observe(i));
     return () => observer.disconnect();
   }, []);
 
+  const toggleTheme = () => {
+    setTheme(currentTheme => {
+      const nextTheme = currentTheme === "light" ? "dark" : "light";
+      window.localStorage.setItem("demo-product-theme-v2", nextTheme);
+      return nextTheme;
+    });
+  };
+
   return (
-    <main>
+    <main className="landing-page" data-theme={theme}>
       <nav className="nav">
-        <Link href="/" aria-label="demo home"><Brand light /></Link>
+        <Link href="/" aria-label="demo home"><Brand light={theme === "dark"} /></Link>
         <div className={`nav-links ${menu ? "open" : ""}`}>
           <a href="#how" onClick={() => setMenu(false)}>How it works</a>
           <a href="#platform" onClick={() => setMenu(false)}>Platform</a>
@@ -58,6 +61,15 @@ export default function Home() {
           <a href="#about" onClick={() => setMenu(false)}>About us</a>
         </div>
         <div className="nav-actions">
+          <button
+            className="theme-switch site-theme-switch"
+            onClick={toggleTheme}
+            aria-label={`Switch to ${theme === "light" ? "dark" : "bright"} mode`}
+            aria-pressed={theme === "dark"}
+          >
+            <Icon name={theme === "light" ? "moon" : "sun"} size={17}/>
+            <span>{theme === "light" ? "Dark" : "Bright"}</span>
+          </button>
           <Link className="button button-lime button-small" href="/dashboard">Open workspace <Icon name="arrow" size={18}/></Link>
         </div>
         <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle navigation"><Icon name={menu ? "close" : "menu"}/></button>
@@ -69,7 +81,7 @@ export default function Home() {
           <h1>HR, handled.<br/><span>People, first.</span></h1>
           <p>We run onboarding, compliance and people ops for small businesses—so you can grow your team without becoming an HR expert.</p>
           <div className="hero-actions">
-            <button className="button button-lime button-static" type="button" disabled>Log in <Icon name="arrow"/></button>
+            <Link className="button button-lime" href="/login">Log in <Icon name="arrow"/></Link>
             <a className="play-link" href="#how"><span className="play">↓</span> See how it works</a>
           </div>
           <div className="trust-row"><div className="avatars"><span>AK</span><span>MJ</span><span>TS</span></div><p><strong>500+ small teams</strong><br/>already breathe easier</p></div>
@@ -135,16 +147,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="roles" className="roles">
-        <div className="role-tabs">{roles.map((r,i)=><button className={i===role?"active":""} onClick={()=>setRole(i)} key={r.label}>{r.label}</button>)}</div>
-        <div className="role-content">
-          <div className="role-icon"><Icon name={roles[role].icon} size={52}/></div>
-          <div><p className="role-kicker">BUILT FOR {roles[role].label.toUpperCase()}</p><h2>{roles[role].title}</h2></div>
-          <div><p>{roles[role].text}</p><Link href="/dashboard">View the experience <Icon name="arrow" size={20}/></Link></div>
-        </div>
-      </section>
-
-      <section className="audience-views">
+      <section id="roles" className="audience-views">
         <div className="audience-heading">
           <div className="eyebrow eyebrow-light"><span/> TWO ROLES. ONE SYSTEM.</div>
           <h2>Different views.<br/>The same clear truth.</h2>
@@ -203,15 +206,10 @@ export default function Home() {
             <p>This is placeholder copy for testing the page layout. Replace it later with your company story, mission and values.</p>
           </div>
         </div>
-        <div className="about-values">
-          <article><span>01</span><h3>Clear by default</h3><p>Simple words, visible progress and fewer surprises.</p></article>
-          <article><span>02</span><h3>Human when it matters</h3><p>Real support for the moments software cannot solve alone.</p></article>
-          <article><span>03</span><h3>Built to grow</h3><p>A calm foundation for every new person and every next step.</p></article>
-        </div>
       </section>
 
       <footer>
-        <div><Brand light/><p>Human support. Smart systems.<br/>HR that simply gets done.</p></div>
+        <div><Brand light={theme === "dark"}/><p>Human support. Smart systems.<br/>HR that simply gets done.</p></div>
         <div className="footer-links"><div><strong>Platform</strong><a href="#how">How it works</a><a href="#platform">Features</a><Link href="/dashboard">Workspace</Link></div><div><strong>Company</strong><a href="#">About</a><a href="#">Careers</a><a href="#">Contact</a></div><div><strong>Legal</strong><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Security</a></div></div>
         <div className="footer-bottom"><span>© 2026 demo, Inc.</span><span>HR, handled with care.</span></div>
       </footer>

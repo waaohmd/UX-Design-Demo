@@ -7,7 +7,8 @@
     "dev": "vinext dev",
     "build": "vinext build && node scripts/copy-hosting.mjs",
     "start": "vinext start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "security:test": "node scripts/security-test.mjs"
   },
   "dependencies": {
     "next": "15.5.22",
